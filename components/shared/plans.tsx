@@ -1,7 +1,7 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
-import { Check } from 'lucide-react'
+import { Check } from '@/components/icons'
+import { useRevealOnScroll } from '@/hooks/useRevealOnScroll'
 
 const plans = [
   {
@@ -47,44 +47,16 @@ const plans = [
     popular: false,
   },
 ]
-
 export default function Plans() {
-  const [visibleCards, setVisibleCards] = useState<boolean[]>([false, false, false])
-  const cardsRef = useRef<(HTMLDivElement | null)[]>([])
-
-  useEffect(() => {
-    const observers = cardsRef.current.map((card, index) => {
-      if (!card) return null
-      return new IntersectionObserver(
-        ([entry]) => {
-          if (entry.isIntersecting) {
-            setTimeout(() => {
-              setVisibleCards((prev) => {
-                const newVisible = [...prev]
-                newVisible[index] = true
-                return newVisible
-              })
-            }, index * 100)
-          }
-        },
-        { threshold: 0.1 }
-      )
-    })
-
-    observers.forEach((observer, index) => {
-      if (observer && cardsRef.current[index]) {
-        observer.observe(cardsRef.current[index]!)
-      }
-    })
-
-    return () => {
-      observers.forEach((observer) => observer?.disconnect())
-    }
-  }, [])
+  const { visibleItems, itemsRef } = useRevealOnScroll<HTMLDivElement>(3, {
+    threshold: 0.1,
+  })
 
   return (
     <section id="plans" className="py-20 px-4">
       <div className="max-w-7xl mx-auto">
+
+        {/* header */}
         <div className="text-center mb-16">
           <h2 className="text-4xl sm:text-5xl font-bold text-white mb-4">
             Escoge tu plan
@@ -94,35 +66,33 @@ export default function Plans() {
           </p>
         </div>
 
+        {/* cards */}
         <div className="grid md:grid-cols-3 gap-8 lg:gap-6">
           {plans.map((plan, index) => (
             <div
-              key={index}
+              key={plan.name}
               ref={(el) => {
-                cardsRef.current[index] = el
+                if (el) itemsRef.current[index] = el
               }}
-              className={`relative transition-all duration-700 ${visibleCards[index]
-                ? 'opacity-100 translate-y-0'
-                : 'opacity-0 translate-y-8'
-                }`}
+              className={`transition-all duration-700 ${
+                visibleItems[index]
+                  ? 'opacity-100 translate-y-0'
+                  : 'opacity-0 translate-y-8'
+              }`}
             >
-              <div
-                className={`relative h-full rounded-2xl bg-white/20 border border-white/10 transition-all duration-300 p-8 hover:shadow-xl group`}
-              >
+              <div className="relative h-full rounded-2xl bg-white/10 p-8">
+
                 {plan.popular && (
-                  <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-                    <span className="bg-primary from-primary to-primary/60 text-primary-foreground px-4 py-1 rounded-full text-sm font-bold">
-                      Más Popular
-                    </span>
-                  </div>
+                  <span className="absolute -top-4 left-1/2 -translate-x-1/2 bg-white px-4 py-1 rounded-full text-sm font-bold">
+                    Más Popular
+                  </span>
                 )}
 
-                <div className="mb-8">
-                  <h3 className="text-2xl font-bold text-white mb-2">
-                    {plan.name}
-                  </h3>
-                  <p className="text-white text-sm">{plan.description}</p>
-                </div>
+                <h3 className="text-2xl font-bold text-white mb-2">
+                  {plan.name}
+                </h3>
+
+                <p className="text-white/70 mb-6">{plan.description}</p>
 
                 <div className="mb-8">
                   <span className="text-5xl font-bold text-white">
@@ -131,40 +101,36 @@ export default function Plans() {
                   <span className="text-white">{plan.billing}</span>
                 </div>
 
-                <button
-                  className={`w-full py-3 rounded-lg font-bold mb-8 transition-all duration-200 transform hover:scale-103 active:scale-95 bg-main text-white`}
-                >
+                <button className="w-full py-3 rounded-lg font-bold mb-8 bg-main text-white">
                   Subscríbeme
                 </button>
 
                 <div className="space-y-4">
-                  {plan.features.map((feature, featureIndex) => (
+                  {plan.features.map((feature, i) => (
                     <div
-                      key={featureIndex}
-                      className="flex items-start gap-3 transition-all duration-500"
+                      key={feature}
+                      className="flex gap-3 transition-all duration-500"
                       style={{
-                        transitionDelay: visibleCards[index]
-                          ? `${featureIndex * 50}ms`
+                        transitionDelay: visibleItems[index]
+                          ? `${i * 50}ms`
                           : '0ms',
-                        opacity: visibleCards[index] ? 1 : 0,
-                        transform: visibleCards[index]
+                        opacity: visibleItems[index] ? 1 : 0,
+                        transform: visibleItems[index]
                           ? 'translateX(0)'
                           : 'translateX(-10px)',
                       }}
                     >
-                      <Check className="text-blue-400 shrink-0 mt-1" size={20} />
+                      <Check className="text-blue-400 mt-1" size={20} />
                       <span className="text-white">{feature}</span>
                     </div>
                   ))}
                 </div>
+
               </div>
             </div>
           ))}
         </div>
 
-        <p className="text-center text-white/70 text-sm mt-12">
-          Todos los planes incluyen una prueba gratuita de 7 días. Cancela en cualquier momento, sin preguntas.
-        </p>
       </div>
     </section>
   )

@@ -23,12 +23,12 @@ export default function Header() {
             >
               Planes
             </a>
-            <a
+            {/* <a
               href="#benefits"
               className="text-white/70 hover:text-white transition-colors"
             >
               Beneficios
-            </a>
+            </a> */}
             <a
               href="#extras"
               className="text-white/70 hover:text-white transition-colors"

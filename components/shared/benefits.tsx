@@ -6,23 +6,23 @@ import { Tv, Smartphone, Zap, Users } from 'lucide-react'
 const benefits = [
   {
     icon: Tv,
-    title: 'Stream on Any Device',
-    description: 'Watch on your TV, phone, tablet, or laptop. Your content follows you everywhere.',
+    title: 'Reproduce en cualquier dispositivo',
+    description: 'Ve en tu TV, teléfono, tablet o portátil. Tu contenido te acompaña donde vayas.',
   },
   {
     icon: Zap,
-    title: 'Fast & Reliable',
-    description: 'Experience smooth, uninterrupted streaming with our advanced technology.',
+    title: 'Rápido y confiable',
+    description: 'Disfruta de streaming fluido y sin interrupciones gracias a nuestra tecnología avanzada.',
   },
   {
     icon: Users,
-    title: 'Share with Family',
-    description: 'Create separate profiles for each family member with personalized recommendations.',
+    title: 'Comparte con tu familia',
+    description: 'Crea perfiles separados para cada miembro con recomendaciones personalizadas.',
   },
   {
     icon: Smartphone,
-    title: 'Download & Watch',
-    description: 'Download your favorite content to watch offline whenever you want.',
+    title: 'Descarga y mira sin conexión',
+    description: 'Descarga tus contenidos favoritos para verlos sin conexión cuando quieras.',
   },
 ]
 

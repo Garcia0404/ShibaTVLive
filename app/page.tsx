@@ -28,7 +28,7 @@ export default function Home() {
       <Header />
       <Hero />
       <Plans />
-      <Benefits />
+      {/* <Benefits /> */}
       <Extras />
       <Sports/>
       <Platforms />

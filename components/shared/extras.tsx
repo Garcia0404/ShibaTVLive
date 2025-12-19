@@ -1,16 +1,29 @@
 "use client";
 
-import { useState } from "react";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogDescription,
-} from "@/components/ui/dialog";
+import { useState, useEffect } from "react";
+import { ArrowRight, ArrowLeft } from "@/components/icons";
 
 export const Extras = () => {
   const [openDialog, setOpenDialog] = useState<string | null>(null);
+
+  const [index, setIndex] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
+
+  const next = () => setIndex((prev) => (prev + 1) % extras.length);
+
+  const prev = () =>
+    setIndex((prev) => (prev - 1 + extras.length) % extras.length);
+
+  // Autoplay (3s) with pause on hover/focus
+
+  useEffect(() => {
+    if (isPaused) return;
+    const id = window.setInterval(
+      () => setIndex((i) => (i + 1) % extras.length),
+      4000
+    );
+    return () => window.clearInterval(id);
+  }, [isPaused]);
 
   const extras = [
     {
@@ -70,108 +83,104 @@ export const Extras = () => {
   ];
 
   return (
-    <section id="extras" className="py-20 px-4 relative">
-      <div className="pointer-events-none absolute inset-0 z-0 flex justify-center items-center opacity-80 mask-y-from-85%">
+    <section
+      id="extras"
+      className="my-20 relative h-80 overflow-hidden flex items-center"
+      onMouseEnter={() => setIsPaused(true)}
+      onMouseLeave={() => setIsPaused(false)}
+      onFocus={() => setIsPaused(true)}
+      onBlur={() => setIsPaused(false)}
+    >
+      {/* Left / Right arrows */}
+      <button
+        aria-label="Anterior"
+        onClick={prev}
+        className="cursor-pointer absolute left-4 top-1/2 -translate-y-1/2 text-white p-3 rounded-full z-20 bg-black/30 hover:bg-black/50 shadow transition"
+      >
+        <ArrowLeft size={20} />
+      </button>
+
+      <button
+        aria-label="Siguiente"
+        onClick={next}
+        className="cursor-pointer absolute right-4 top-1/2 -translate-y-1/2 text-white p-3 rounded-full z-20 bg-black/30 hover:bg-black/50 shadow transition"
+      >
+        <ArrowRight size={20} />
+      </button>
+      <div className="absolute inset-0 pointer-events-none">
         <img
-          src="/extras/background.svg"
-          alt="extras background"
-          width={1000}
-          height={1000}
+          src="/extras/background-desktop.jpg"
+          alt="bg"
+          className="w-full h-full object-cover opacity-10"
         />
+        <div className="absolute inset-0 from-transparent to-black/50" />
       </div>
-      <div className="max-w-7xl mx-auto text-center">
-        <h2 className="text-4xl sm:text-5xl font-bold text-white mb-4">
-          Contenido Extra Exclusivo
-        </h2>
-        <p className="text-lg text-white/60">
-          Disfruta de contenido adicional que no encontrarás en ningún lugar.
-        </p>
-      </div>
-
-      <div className="max-w-7xl mx-auto mt-12">
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 md:px-30 px-0">
-          {extras.map((extra, idx) => {
-            // base card classes
-            const base =
-              "backdrop-blur-lg border p-6 bg-white/40 rounded-lg transition-colors duration-300 flex flex-col gap-4 items-start cursor-pointer hover:bg-white/70";
-
-            let positionClass = "";
-            if (idx === 4) {
-              positionClass = "lg:col-start-2 lg:col-end-3";
-            } else if (idx === 5) {
-              positionClass = "lg:col-start-3 lg:col-end-4";
-            }
-
-            return (
-              <div
-                key={extra.id}
-                onClick={() => setOpenDialog(extra.id)}
-                className={`${base} ${positionClass}`}
-              >
-                <img
-                  src={extra.logo}
-                  alt={`${extra.title} logo`}
-                  className="object-contain shrink-0"
-                  width={100}
-                  height={40}
-                  onError={(e) => {
-                    (e.currentTarget as HTMLImageElement).style.display =
-                      "none";
-                  }}
-                />
-                <div>
-                  <h3 className="text-2xl font-bold text-black mb-2">
-                    {extra.title}
-                  </h3>
-                  <p className="text-black">{extra.description}</p>
+      <div className="mx-auto w-full text-white">
+        <div
+          className="flex transition-transform duration-600 ease-in-out"
+          style={{ transform: `translateX(-${index * 100}%)` }}
+        >
+          {extras.map((extra) => (
+            <div
+              key={extra.id}
+              onClick={() => setOpenDialog(extra.id)}
+              className="w-screen flex-none flex justify-center"
+            >
+              <div className="max-w-5xl">
+                <div className="flex flex-col md:flex-row items-center gap-6">
+                  <div className="text-white">
+                    <div>
+                      <img
+                        src={extra.logo}
+                        alt={`${extra.title} logo`}
+                        className="h-20 md:h-28 object-contain"
+                        width={240}
+                        height={200}
+                        onError={(e) => {
+                          (e.currentTarget as HTMLImageElement).style.display =
+                            "none";
+                        }}
+                      />
+                    </div>
+                    <p className="text-base md:text-lg text-white/90 mb-4 max-w-2xl">
+                      {extra.description}
+                    </p>
+                    <div className="flex items-center gap-3">
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setOpenDialog(extra.id);
+                        }}
+                        className="inline-flex items-center gap-2 bg-yellow-500 text-black px-4 py-2 rounded font-semibold hover:brightness-95 transition"
+                      >
+                        Ver detalles
+                        <ArrowRight size={16} />
+                      </button>
+                      <span className="text-xs text-white/60">
+                        Contenido recomendado
+                      </span>
+                    </div>
+                  </div>
                 </div>
               </div>
-            );
-          })}
+            </div>
+          ))}
+        </div>
+
+        {/* Dots */}
+        <div className="absolute left-1/2 -translate-x-1/2 bottom-6 z-30 flex gap-2">
+          {extras.map((_, i) => (
+            <button
+              key={i}
+              aria-label={`Ir al slide ${i + 1}`}
+              onClick={() => setIndex(i)}
+              className={`h-2 w-8 rounded-full transition ${
+                i === index ? "bg-yellow-500 scale-110" : "bg-white/30"
+              }`}
+            />
+          ))}
         </div>
       </div>
-
-      {/* Dialogs */}
-      {extras.map((extra) => (
-        <Dialog
-          key={extra.id}
-          open={openDialog === extra.id}
-          onOpenChange={(open) => setOpenDialog(open ? extra.id : null)}
-        >
-          <DialogContent className="bg-black/80 border border-white/10 backdrop-blur-md p-0 flex flex-col">
-            <div>
-              <div className="text-white text-center px-6 pt-4 font-bold sm:text-lg">
-                Agregue contenidos extras
-              </div>
-            </div>
-
-            <div className="relative w-full h-50 overflow-hidden">
-              {/* Imagen con mask gradient a transparente */}
-              <img
-                src="https://media.bss-prd.directvgo.com/media/catalog/product/cache/74c1057f7991b4edb2bc7bdaa94de933/i/m/img_generica_atresplayer.jpg"
-                alt={extra.title}
-                className="w-full h-full object-cover mask-b-from-10%"
-              />
-            </div>
-
-            <div className="px-6 pb-2 md:pb-6 transform -translate-y-10">
-              <DialogHeader>
-                <DialogTitle className="text-3xl sm:text-6xl text-center font-extrabold text-white">
-                  {extra.title}
-                </DialogTitle>
-                <DialogDescription className="text-white/70 text-center text-md sm:text-lg text-pretty">
-                  <span className="sm:mx-12 font-semibold mt-2 block">
-                    {extra.dialogDetails}
-                  </span>
-                  <div className="text-xs sm:text-sm text-white/60 mt-2 sm:mt-6">
-                    {extra.description}
-                  </div>
-                </DialogDescription>
-              </DialogHeader>
-            </div>
-          </DialogContent>
-        </Dialog>
-      ))}
     </section>
   );
 };
