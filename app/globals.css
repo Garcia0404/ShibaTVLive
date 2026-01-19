@@ -9,18 +9,18 @@ html {
   --animate-carrousel: carrousel 18s infinite linear;
   --animate-carrousel-reverse: carrousel-reverse 18s infinite linear;
   @keyframes carrousel {
-    from {
+    0% {
       transform: translate3d(0, 0, 0);
     }
-    to {
+    100% {
       transform: translate3d(-100%, 0, 0);
     }
   }
   @keyframes carrousel-reverse {
-    from {
+    0% {
       transform: translate3d(-100%, 0, 0);
     }
-    to {
+    100% {
       transform: translate3d(0, 0, 0);
     }
   }
