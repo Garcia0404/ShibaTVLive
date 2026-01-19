@@ -45,16 +45,53 @@ export const Sports = () => {
           </p>
         </div>
 
-        <div className="flex overflow-hidden gap-4 group mask-x-from-94% h-40">
-          <div className="flex items-center justify-center gap-4 animate-carrousel group-hover:paused">
-            {trackItems.map((item, i) => (
-              <SportCard key={`${item.src}-${i}`} src={item.src} alt={item.alt} />
-            ))}
+        <div className="flex flex-col gap-4">
+          <div className="flex overflow-hidden gap-4 group mask-x-from-94% h-40">
+            <div className="flex items-center justify-center gap-4 animate-carrousel group-hover:paused">
+              {trackItems.map((item, i) => (
+                <SportCard
+                  key={`${item.src}-${i}`}
+                  src={item.src}
+                  alt={item.alt}
+                />
+              ))}
+            </div>
+            <div
+              aria-hidden
+              className="flex items-center justify-center gap-4 animate-carrousel group-hover:paused"
+            >
+              {trackItems.map((item, i) => (
+                <SportCard
+                  key={`${item.src}-${i}`}
+                  src={item.src}
+                  alt={item.alt}
+                />
+              ))}
+            </div>
           </div>
-          <div aria-hidden className="flex items-center justify-center gap-4 animate-carrousel group-hover:paused">
-            {trackItems.map((item, i) => (
-              <SportCard key={`${item.src}-${i}`} src={item.src} alt={item.alt} />
-            ))}
+
+          <div className="flex overflow-hidden gap-4 group mask-x-from-94% h-40">
+            <div className="flex items-center justify-center gap-4 animate-carrousel-reverse group-hover:paused">
+              {trackItems.map((item, i) => (
+                <SportCard
+                  key={`${item.src}-${i}`}
+                  src={item.src}
+                  alt={item.alt}
+                />
+              ))}
+            </div>
+            <div
+              aria-hidden
+              className="flex items-center justify-center gap-4 animate-carrousel-reverse group-hover:paused"
+            >
+              {trackItems.map((item, i) => (
+                <SportCard
+                  key={`${item.src}-${i}`}
+                  src={item.src}
+                  alt={item.alt}
+                />
+              ))}
+            </div>
           </div>
         </div>
       </div>
