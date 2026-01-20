@@ -1,7 +1,7 @@
 import { Button } from "../ui/button"
 import { Input } from "../ui/input"
 
-export const Subscription = () => {
+export default function Subscription() {
   return (
     <section id="subscription" className="pb-20 px-4">
       <div className="max-w-7xl mx-auto text-center flex flex-col gap-6">

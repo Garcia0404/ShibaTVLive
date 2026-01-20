@@ -62,7 +62,7 @@ const CarouselTrack = ({ items, animationClass }: { items: typeof SPORTS | typeo
   </>
 );
 
-export const Sports = () => {
+export default function Sports () {
   return (
     <section id="sports" className="py-20 px-4">
       <div className="max-w-7xl mx-auto">

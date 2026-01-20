@@ -16,17 +16,13 @@ const Hero = memo(function Hero() {
   return (
     <section className="relative flex items-center h-dvh px-4 pb-16 sm:pt-40 sm:pb-24">
       
-      {/* Imagen HERO (LCP real) */}
       <Image
         src="/portada.webp"
         alt="Shiba TV Live"
         fill
         priority
-        className="object-cover z-0 mask-b-from-1 opacity-40"
+        className="object-cover z-0 opacity-30"
       />
-
-      {/* Overlay */}
-      
 
       <div className="relative z-20 max-w-4xl mx-auto text-center">
         <div

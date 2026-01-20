@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { ArrowRight, ArrowLeft } from "@/components/icons";
 
-export const Extras = () => {
+export default function Extras() {
   const [openDialog, setOpenDialog] = useState<string | null>(null);
 
   const [index, setIndex] = useState(0);
