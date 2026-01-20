@@ -1,17 +1,39 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, lazy, Suspense } from 'react'
+import dynamic from 'next/dynamic'
 import Header from '@/components/shared/header'
 import Hero from '@/components/shared/hero'
 import Plans from '@/components/shared/plans'
 import FAQ from '@/components/shared/faq'
 import Footer from '@/components/shared/footer'
-import { Sports } from '@/components/shared/sports'
-import { Extras } from '@/components/shared/extras'
-import { Subscription } from '@/components/shared/subscription'
-import AndroidBox from '@/components/shared/androidbox'
-import Platforms from '@/components/shared/platforms'
 import { toast } from "sonner"
+
+// Lazy load componentes que no son críticos
+const Sports = dynamic(() => import('@/components/shared/sports').then(mod => ({ default: mod.Sports })), {
+  loading: () => null,
+  ssr: true,
+});
+
+const Extras = dynamic(() => import('@/components/shared/extras').then(mod => ({ default: mod.Extras })), {
+  loading: () => null,
+  ssr: true,
+});
+
+const Subscription = dynamic(() => import('@/components/shared/subscription').then(mod => ({ default: mod.Subscription })), {
+  loading: () => null,
+  ssr: true,
+});
+
+const AndroidBox = dynamic(() => import('@/components/shared/androidbox'), {
+  loading: () => null,
+  ssr: true,
+});
+
+const Platforms = dynamic(() => import('@/components/shared/platforms'), {
+  loading: () => null,
+  ssr: true,
+});
 
 export default function Home() {
   const [isVisible, setIsVisible] = useState(false)
@@ -57,16 +79,25 @@ export default function Home() {
       <Header />
       <Hero />
       <Plans />
-      {/* <Benefits /> */}
-      <Extras />
-      <Sports/>
-      <Platforms />
-      <AndroidBox />
+      <Suspense fallback={null}>
+        <Extras />
+      </Suspense>
+      <Suspense fallback={null}>
+        <Sports/>
+      </Suspense>
+      <Suspense fallback={null}>
+        <Platforms />
+      </Suspense>
+      <Suspense fallback={null}>
+        <AndroidBox />
+      </Suspense>
       <FAQ />
-      <Subscription />
+      <Suspense fallback={null}>
+        <Subscription />
+      </Suspense>
       <Footer />
-      <a href="https://wa.me/51931399867" target="_blank" className='animate-bounce fixed flex items-center pe-3 bottom-0 right-0 m-4 z-50 cursor-pointer bg-green-600 rounded-md'>
-        <img src="/ws-btn.png" width={40} height={40}></img>
+      <a href="https://wa.me/51931399867" target="_blank" className='animate-bounce fixed flex items-center pe-3 bottom-0 right-0 m-4 z-50 cursor-pointer bg-green-700 rounded-md' rel="noopener noreferrer">
+        <img src="/ws-btn.png" width={40} height={40} alt="WhatsApp" loading="lazy" decoding="async"></img>
         <div>
           <span className="text-white font-semibold text-sm">Contacta con Shiba</span>
         </div>

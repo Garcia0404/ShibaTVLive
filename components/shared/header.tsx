@@ -1,9 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useState, memo } from "react";
 import { Menu, X } from "lucide-react";
 
-export default function Header() {
+const Header = memo(function Header() {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -12,7 +12,7 @@ export default function Header() {
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <div className="flex items-center gap-2">
-            <img src="/logo.png" alt="logo shiba tv live" width={180} height={40} />
+            <img src="/logo.png" alt="logo shiba tv live" width={180} height={40} fetchPriority="high" decoding="async" />
           </div>
 
           {/* Desktop Menu */}
@@ -124,4 +124,6 @@ export default function Header() {
       </div>
     </header>
   );
-}
+});
+
+export default Header;

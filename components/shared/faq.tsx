@@ -1,5 +1,6 @@
 'use client'
 
+import { memo } from 'react'
 import {
   Accordion,
   AccordionItem,
@@ -40,7 +41,7 @@ const faqs = [
   },
 ]
 
-export default function FAQ() {
+const FAQ = memo(function FAQ() {
   return (
     <section id="faq" className="py-20 px-4">
       <div className="max-w-3xl mx-auto">
@@ -73,4 +74,6 @@ export default function FAQ() {
       </div>
     </section>
   )
-}
+});
+
+export default FAQ;

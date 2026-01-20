@@ -142,14 +142,25 @@ html {
   }
   body {
     @apply bg-background text-foreground;
+    font-feature-settings: "kern" 1;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  
+  img {
+    display: block;
   }
 }
 
-/* Sonner Toast Animations - Right to Left */
+/* Sonner Toast Animations - Right to Left - Optimized */
 @supports (animation: slideInRight 0.3s cubic-bezier(0.16, 1, 0.3, 1)) {
   [data-sonner-toast] {
     animation: slideInRight 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
     backdrop-filter: blur(15px) !important;
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    perspective: 1000px;
   }
   
   [data-sonner-toast][data-state="closed"] {

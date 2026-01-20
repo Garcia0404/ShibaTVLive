@@ -85,7 +85,7 @@ export const Extras = () => {
   return (
     <section
       id="extras"
-      className="my-20 relative h-80 overflow-hidden flex items-center"
+      className="my-20 relative h-100 overflow-hidden flex items-center"
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
       onFocus={() => setIsPaused(true)}
@@ -109,9 +109,10 @@ export const Extras = () => {
       </button>
       <div className="absolute inset-0 pointer-events-none">
         <img
-          src="/extras/background-desktop.jpg"
+          src="/extras/background-desktop.webp"
           alt="bg"
           className="w-full h-full object-cover opacity-10"
+          loading="lazy"
         />
         <div className="absolute inset-0 from-transparent to-black/50" />
       </div>
